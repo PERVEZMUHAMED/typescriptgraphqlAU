@@ -6,6 +6,8 @@ export const typeDefs = gql `
         userName:String
         email:String
         password:String
+        token:String
+        createUser:User
         personalDetails:Personal
     }
     type Result {
@@ -74,6 +76,22 @@ export const typeDefs = gql `
         currency:String
         Amount:Int
     }
+    input loginInput {
+        email:String
+        password:String
+    }
+    input updateInput {
+        userName:String
+        email:String
+        password:String
+        personalDetails:personalInput
+    }
+    input deleteInput {
+        _id:ID
+        userName:String
+        email:String
+        password:String
+    }
     type Query {
         getUser(_id:ID!):[User]
     }
@@ -82,5 +100,8 @@ export const typeDefs = gql `
         createCurrency(input:currencyInput):Result
         createDeposit(input:depositInput):Result
         createWithdraw(input:withdrawInput):Result
+        Login(input:loginInput):Result
+        updateUser(input:updateInput):Result
+        deleteUser(input:deleteInput):Result
     }
 `;

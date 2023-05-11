@@ -5,12 +5,13 @@ import User from "./Interface/user.model.interface";
 const userSchema = new Schema({
     userName:{
         type:String,
-        required:[true, "Please, Enter the userName"],
+        required:[true, "Please, Enter userName"],
         trim:true
     },
     email:{
         type:String,
         required:[true, "Please Enter Email"],
+        unique:true,
         validate:[validator.isEmail, "Please Enter valid Email Address"]
     },
     password:{
