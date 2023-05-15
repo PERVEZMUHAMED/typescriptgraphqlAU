@@ -93,7 +93,10 @@ export const typeDefs = gql `
         password:String
     }
     type Query {
-        getUser(_id:ID!):[User]
+        getUser(_id:ID):User
+        getAllUsers:[User]
+        getSpecificUser(_id:ID!):User
+        getSpecificUserDetails(_id:ID!):User   
     }
     type Mutation {
         createUser(input:userInput):Result

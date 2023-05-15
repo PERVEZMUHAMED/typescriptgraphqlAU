@@ -94,7 +94,7 @@ class UserBusiness implements IUserBusiness {
     }
     public updateUser= async(args,context)=>{
         console.log("context", context);
-        if(context._id) {
+        if(context.user) {
             try {
                 const updateuser = await this.user.Update(args.input, context, userModel);
                 if(!updateuser) throw new ApolloError("Data Not Found", "401");
@@ -120,5 +120,43 @@ class UserBusiness implements IUserBusiness {
             throw new ApolloError("You not have access to delete this account", "401");
         }
     }
+    public getAllUsers = async(args, context)=>{
+        console.log("context", context);
+        if(context.user) {
+            try {
+                const getuser = await this.user.Find(args.input, userModel);
+                if(!getuser) throw new ApolloError("Data not Retrive", "401");
+                return getuser;
+            } catch (error) {
+                return error;
+            }
+        } else {
+            throw new ApolloError("You not have Access to update this Account", "401");
+        }
+    }
+    public getUser = async(args, context)=>{
+        console.log("context", context);
+        if(context.user) {
+            try {
+                const getuser = await this.user.Findbyid(args.input, userModel, context);
+                console.log("getuserssB", getuser);
+                
+                if(!getuser) throw new ApolloError("Data not Retrive", "401");
+                return getuser;
+            } catch (error) {
+                return error;
+            }
+        } else {
+            throw new ApolloError("You not have Access to retrive this Account", "401");
+        }
+    }
+    // public getUsers =async(args, context)=>{
+    //     try {
+    //         const u = await this.user.verifyToken(args, userModel, context);
+    //     } catch (error) {
+    //      return error;   
+    //     }
+    // } 
 }
+
 export default UserBusiness;

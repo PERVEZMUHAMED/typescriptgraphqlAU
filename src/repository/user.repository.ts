@@ -3,6 +3,8 @@ import "reflect-metadata";
 import IUserRepository from "./Interface/user.repository.interface";
 import { ApolloError } from "apollo-server-express";
 import jwt from "jsonwebtoken";
+import { model } from "mongoose";
+import userModel from "../model/user.model";
 @injectable()
 class UserRepository implements IUserRepository {
     public Create = async(args, model) =>{
@@ -25,7 +27,7 @@ class UserRepository implements IUserRepository {
     }
     public Update = async(args, context, model)=>{
         try {
-            const update = await model.findByIdAndUpdate(context._id,
+            const update = await model.findByIdAndUpdate(context.user,
             {$set:args},{new:true, runValidators:true});
             return update;
         } catch (error) {
@@ -62,5 +64,36 @@ class UserRepository implements IUserRepository {
             return error;
         }
     }
+    public Find = async(args, model)=>{
+        try {
+            const find = await model.find();
+            console.log("findR", find);
+            return find;
+        } catch (error) {
+            return error;
+        }
+    }
+    public Findbyid = async(args, model, context)=>{
+        try {
+            const find = await model.findById(context.user._id);
+            console.log("findbyidR", find);
+            return find;
+        } catch (error) {
+            return error;
+        }
+    }
+    // public verifyToken = async(args, model, context)=>{
+    //     try {
+    //         const {JWT_SECRET} = process.env;
+    //         const token = context.req.headers.authorization;
+    //         if(!token) throw new ApolloError("Login first to Handle this resource","401");
+    //         const decoded:any = jwt.verify(token, JWT_SECRET);
+    //         if(!decoded) throw new ApolloError("Unauthorized User", "401");
+    //         const user = await model.findById(decoded._id);
+    //         return user;
+    //     } catch (error) {
+            
+    //     }
+    // }
 }
 export default UserRepository;
