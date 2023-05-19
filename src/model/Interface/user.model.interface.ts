@@ -8,4 +8,7 @@ export default interface User extends Document {
         gender:string,
         age:number
     }
+    role:string,
+    resetPasswordToken:string,
+    resetPasswordTokenExpire:string
 }

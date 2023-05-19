@@ -4,5 +4,7 @@ export default interface IUserRepository {
     FindOne:(args:any, model:any)=>any,
     Update:(args:any, context:any, model:any)=>any,
     Delete:(args:any, context:any, model:any)=>any,
+    Find:(args:any, model:any)=>any,
+    Findbyid:(args:any, model:any)=>any,
     currency:(args:any, model:any)=>any,
 }

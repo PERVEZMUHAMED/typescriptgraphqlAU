@@ -2,6 +2,7 @@ import express, { Application } from "express";
 import { ApolloError, ApolloServer, AuthenticationError } from "apollo-server-express";
 import { join } from "path";
 import dotenv from "dotenv";
+import crypto from "crypto";
 dotenv.config({path:join(__dirname, "config/config.env")})
 import {typeDefs} from "./type/typedefs";
 import { mutationResolver } from "./resolver/mutation";
@@ -11,7 +12,7 @@ import userModel from "./model/user.model";
 import walletModel from "./model/wallet.model";
 import currencyModel from "./model/currency.model";
 import { userQuery } from "./resolver/Query/userQuery";
-
+import {user} from "./di/container.di";
 
 export default class App {
     app:Application;
@@ -25,13 +26,17 @@ export default class App {
             resolvers:[mutationResolver, userMutation, userQuery],
             context:async({req}) => {
                 try {
-                    const {JWT_SECRET} = process.env;
-                    const token = req.headers.authorization;
-                     if(!token) throw new ApolloError("Login first to handle this resource", "401");
-                    const decoded:any = jwt.verify(token, JWT_SECRET);
-                    if(!decoded) throw new ApolloError("Unauthorized user","401");
-                    const user = await userModel.findById(decoded._id);
-                    return {user};
+                    const token = req.headers.authorization ||"";
+                    const users= await user.verifyToken(token);
+                    // if(!users) throw new ApolloError("Login first to handle this resource", "401");
+                    return {users};
+                    // const {JWT_SECRET} = process.env;
+                    // console.log("token", token);
+                    // const decoded:any = jwt.verify(token, JWT_SECRET);
+                    // console.log("decoded", decoded);
+                    // if(!decoded) throw new ApolloError("Unauthorized user","401");
+                    // const user = await userModel.findById(decoded._id);
+                    // return {user};
                 } catch (error) {
                     return error;
                 }

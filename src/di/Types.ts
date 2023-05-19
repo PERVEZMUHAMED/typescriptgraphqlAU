@@ -3,4 +3,5 @@ export const TYPES = {
     currency:Symbol.for("Currency"),
     Deposit:Symbol.for("Deposit"),
     Withdraw:Symbol.for("Withdraw"),
+    Payment:Symbol.for("Payment"),
 }

@@ -21,7 +21,13 @@ const userSchema = new Schema({
     personalDetails:{
         gender:String,
         age:Number
-    }
+    },
+    role:{
+        type:String,
+        default:"user"
+    },
+    resetPasswordToken:String,
+    resetPasswordTokenExpire:Date,
 },{timestamps:true})
 
 export default model<User>("users", userSchema);

@@ -9,12 +9,15 @@ export const typeDefs = gql `
         token:String
         createUser:User
         personalDetails:Personal
+        resetPasswordToken:String
+        resetPasswordTokenExpire:String
     }
     type Result {
         success:Boolean
         status:Int
         message:String
         userData:User
+        resetPasswordData:User
         currencyData:Currency
         depositData:Deposit
         withdrawData:Withdraw
@@ -92,8 +95,19 @@ export const typeDefs = gql `
         email:String
         password:String
     }
+    input forgotPasswordInput {
+        email:String
+    }
+    input resetPasswordInput {
+        resetPasswordToken:String
+        newPassword:String
+    }
+    input changePasswordInput {
+        oldPassword:String
+        password:String
+    }
     type Query {
-        getUser(_id:ID):User
+        getUser(_id:ID!):User
         getAllUsers:[User]
         getSpecificUser(_id:ID!):User
         getSpecificUserDetails(_id:ID!):User   
@@ -106,5 +120,9 @@ export const typeDefs = gql `
         Login(input:loginInput):Result
         updateUser(input:updateInput):Result
         deleteUser(input:deleteInput):Result
+        forgotPassword(input:forgotPasswordInput):Result
+        resetPassword(input:resetPasswordInput):Result
+        changePassword(input:changePasswordInput):Result
+
     }
 `;

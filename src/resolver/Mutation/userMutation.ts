@@ -63,5 +63,48 @@ export const userMutation = {
         return error;
       }
     },
+    forgotPassword:async(parent, args, context)=>{
+      try {
+        const forgotpassword = await user.forgotPassword(args);
+        if(!forgotpassword) throw new ApolloError("Data Not Found", "401");
+        return {
+          success:true,
+          status:201,
+          message:`Email send to ${args.input.email}`,
+        }
+      } catch (error) {
+        return error;  
+      }
+    },
+    resetPassword:async(parent, args, context)=>{
+      try {
+        const resetPassword = await user.resetPassword(args);
+        console.log("resetPasswordM", resetPassword);
+        if(!resetPassword) throw new ApolloError("Data not Found", "401");
+        return {
+          success:true,
+          status:201,
+          message:"Login Successfully",
+          resetPasswordData:resetPassword,
+        }
+      } catch (error) {
+        return error;
+      }
+    },
+    changePassword:async(parent, args, context)=>{
+      try {
+        const changePassword = await user.changePassword(args, context);
+        console.log("changePasswordM", changePassword);
+        if(!changePassword) throw new ApolloError("Data not Found", "401");
+        return {
+          success:true,
+          status:201,
+          // message:"Login Successfully",
+          // changePasswordData:changePassword,
+        }
+      } catch (error) {
+        return error;
+      }
+    }
   }
 }
