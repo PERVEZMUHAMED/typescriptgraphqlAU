@@ -14,10 +14,14 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const inversify_1 = require("inversify");
 require("reflect-metadata");
 const apollo_server_express_1 = require("apollo-server-express");
+const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 let UserRepository = class UserRepository {
     constructor() {
         this.Create = (args, model) => __awaiter(this, void 0, void 0, function* () {
@@ -41,12 +45,63 @@ let UserRepository = class UserRepository {
                 return error;
             }
         });
+        this.Update = (args, context, model) => __awaiter(this, void 0, void 0, function* () {
+            try {
+                const update = yield model.findByIdAndUpdate(context.users, { $set: args }, { new: true, runValidators: true });
+                return update;
+            }
+            catch (error) {
+                return error;
+            }
+        });
+        this.getJwtToken = (args, model) => __awaiter(this, void 0, void 0, function* () {
+            console.log("argsr", args);
+            try {
+                const { JWT_SECRET, JWT_EXPIRES_TIMES } = process.env;
+                const user = yield this.FindOne(args, model);
+                console.log("userR", user);
+                const token = jsonwebtoken_1.default.sign({ _id: user._id }, JWT_SECRET, { expiresIn: JWT_EXPIRES_TIMES });
+                return token;
+            }
+            catch (error) {
+                return error;
+            }
+        });
+        this.Delete = (args, context, model) => __awaiter(this, void 0, void 0, function* () {
+            try {
+                const update = yield model.findByIdAndDelete(context._id);
+                return update;
+            }
+            catch (error) {
+                return error;
+            }
+        });
         this.currency = (args, model) => __awaiter(this, void 0, void 0, function* () {
             try {
                 const currency = yield model.find({}, { code: 1 });
                 console.log("currencyR", currency);
                 // if(!currency) throw new ApolloError("Data not Find");
                 return currency;
+            }
+            catch (error) {
+                return error;
+            }
+        });
+        this.Find = (args, model) => __awaiter(this, void 0, void 0, function* () {
+            try {
+                const find = yield model.find();
+                console.log("findR", find);
+                return find;
+            }
+            catch (error) {
+                return error;
+            }
+        });
+        this.Findbyid = (args, model) => __awaiter(this, void 0, void 0, function* () {
+            try {
+                const find = yield model.findById(args);
+                // console.log("findbyidR", find);
+                return find;
             }
             catch (error) {
                 return error;

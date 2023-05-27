@@ -14,24 +14,23 @@ const apollo_server_express_1 = require("apollo-server-express");
 const container_di_1 = require("../di/container.di");
 exports.mutationResolver = {
     Mutation: {
-        createUser: (parent, args, context) => __awaiter(void 0, void 0, void 0, function* () {
-            try {
-                const createuser = yield container_di_1.user.Register(args);
-                console.log("argss", args);
-                if (!createuser)
-                    throw new apollo_server_express_1.ApolloError("Data Not Found", "401");
-                return {
-                    success: true,
-                    status: 201,
-                    message: "Registration Successfully",
-                    userData: createuser
-                };
-            }
-            catch (error) {
-                return error;
-            }
-        }),
+        //   createUser: async(parent, args, context)=>{
+        //     try {
+        //       const createuser = await user.Register(args);
+        //       console.log("argss", args);
+        //       if(!createuser) throw new ApolloError("Data Not Found", "401");
+        //       return {
+        //         success:true,
+        //         status:201,
+        //         message:"Registration Successfully",
+        //         userData:createuser
+        //       }
+        //     } catch (error) {
+        //       return error
+        //     }
+        // },
         createCurrency: (parent, args, context) => __awaiter(void 0, void 0, void 0, function* () {
+            console.log("context.user", context);
             try {
                 const createcurrency = yield container_di_1.currency.createCurrency(args);
                 if (!createcurrency)
@@ -79,6 +78,48 @@ exports.mutationResolver = {
             catch (error) {
                 return error;
             }
-        })
+        }),
+        // Login:async(parent, args, Context)=>{
+        //   console.log("context", Context);
+        //   try {
+        //     const login = await user.Login(args, Context);
+        //     if(!login) throw new ApolloError("Data Not Found", "401");
+        //     return {
+        //       success:true,
+        //       status:201,
+        //       message:"Login Successfully",
+        //       userData:login
+        //     }
+        //   } catch (error) {
+        //     return error;
+        //   }
+        // },
+        // updateUser:async(parent, args, context)=>{
+        //   try {
+        //     const updateuser = await user.updateUser(args, context);
+        //     if(!updateuser) throw new ApolloError("Data Not Found", "401");
+        //     return {
+        //       success:true,
+        //       status:201,
+        //       message:"Login Successfully",
+        //       userData:updateuser
+        //     }
+        //   } catch (error) {
+        //     return error;
+        //   }
+        // },
+        // deleteUser:async(parent, args, context)=>{
+        //   try {
+        //     const deleteuser = await user.deleteUser(args, context);
+        //     if(!deleteuser) throw new ApolloError("Data Not Found", "401");
+        //     return {
+        //       success:true,
+        //       status:201,
+        //       message:"Deleted Successfully",
+        //     }
+        //   } catch (error) {
+        //     return error;
+        //   }
+        // },
     }
 };
