@@ -130,7 +130,7 @@ class UserBusiness implements IUserBusiness {
     // Read all users when a user login.
     public getAllUsers = async(args, context)=>{
         console.log("context", context);
-        if(context.user) {
+        if(context.users && context.users.role.includes('user')) {
             try {
                 const getuser = await this.user.Find(args.input, userModel);
                 if(!getuser) throw new ApolloError("Data not Retrive", "401");
